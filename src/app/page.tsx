@@ -72,7 +72,7 @@ export default function Home() {
               if (existing) {
                 setCurrentUser({
                   name: existing.name,
-                  timezone: parsed.timezone ?? existing.timezone,
+                  timezone: parsed.timezone ?? 'Africa/Johannesburg',
                   color: existing.color,
                 });
                 setUserRanges(existing.ranges);
