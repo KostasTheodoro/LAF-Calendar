@@ -12,7 +12,7 @@ interface Props {
   weekendEnd: Date;
   currentUser: { name: string; timezone: string } | null;
   userRanges: TimeRange[];
-  mockPeople: Person[];
+  people: Person[];
   onUpdateRanges: (ranges: TimeRange[]) => void;
 }
 
@@ -67,7 +67,7 @@ export default function CalendarGrid({
   weekendEnd,
   currentUser,
   userRanges,
-  mockPeople,
+  people,
   onUpdateRanges,
 }: Props) {
   const displayTZ = currentUser?.timezone ?? 'Africa/Johannesburg';
@@ -118,7 +118,7 @@ export default function CalendarGrid({
 
   // All people including current user
   const allPeople = [
-    ...mockPeople,
+    ...people,
     ...(currentUser
       ? [{ id: 'current', name: currentUser.name, color: '#22c55e', ranges: userRanges }]
       : []),
@@ -249,7 +249,7 @@ export default function CalendarGrid({
           onMouseEnter={currentUser ? () => handleMouseEnter(ts) : undefined}
         />
 
-        {mockPeople.map((person) => (
+        {people.map((person) => (
           <div
             key={person.id}
             className="flex-1 min-w-[90px] border-l border-gray-800"
@@ -294,7 +294,7 @@ export default function CalendarGrid({
           </div>
         )}
 
-        {mockPeople.map((person) => (
+        {people.map((person) => (
           <div
             key={person.id}
             className="flex-1 min-w-[90px] px-2 py-2 text-center text-xs font-bold border-l border-gray-700"
