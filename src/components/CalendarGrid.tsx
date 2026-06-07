@@ -173,10 +173,46 @@ export default function CalendarGrid({
     setDragPreview(null);
   }, [onUpdateRanges]);
 
+  const handleMouseDownRef = useRef(handleMouseDown);
+  handleMouseDownRef.current = handleMouseDown;
+  const handleMouseEnterRef = useRef(handleMouseEnter);
+  handleMouseEnterRef.current = handleMouseEnter;
+  const handleMouseUpRef = useRef(handleMouseUp);
+  handleMouseUpRef.current = handleMouseUp;
+
   useEffect(() => {
     document.addEventListener('mouseup', handleMouseUp);
-    return () => document.removeEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchend', handleMouseUp);
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchend', handleMouseUp);
+    };
   }, [handleMouseUp]);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => {
+      const tsAttr = (e.target as HTMLElement).closest('[data-ts]')?.getAttribute('data-ts');
+      if (!tsAttr) return;
+      e.preventDefault();
+      handleMouseDownRef.current(Number(tsAttr));
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!dragRef.current) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+      const tsAttr = elem?.closest('[data-ts]')?.getAttribute('data-ts');
+      if (tsAttr) handleMouseEnterRef.current(Number(tsAttr));
+    };
+    el.addEventListener('touchstart', onTouchStart, { passive: false });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+    };
+  }, []);
 
   // Build grid rows
   const rows: ReactNode[] = [];
@@ -232,6 +268,7 @@ export default function CalendarGrid({
         </div>
 
         <div
+          data-ts={currentUser ? ts : undefined}
           className={`flex-1 min-w-[100px] border-l border-gray-800 ${
             currentUser ? 'cursor-crosshair' : ''
           } transition-colors ${
