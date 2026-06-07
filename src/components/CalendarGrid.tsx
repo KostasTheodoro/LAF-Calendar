@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import type { Person, TimeRange } from '@/lib/types';
 import { formatTime, getLocalDateString, formatLocalDayLabel } from '@/lib/timezones';
 
-const STEP_MS = 30 * 60 * 1000;
+const STEP_MS = 60 * 60 * 1000;
 
 interface Props {
   weekendStart: Date;
@@ -220,7 +220,6 @@ export default function CalendarGrid({
   for (let i = 0; i < steps.length; i++) {
     const ts = steps[i];
     const date = new Date(ts);
-    const isHourMark = i % 2 === 0;
     const dayLabel = dayBoundaries.get(i);
 
     if (dayLabel) {
@@ -255,16 +254,12 @@ export default function CalendarGrid({
     rows.push(
       <div
         key={`step-${ts}`}
-        className={`flex items-stretch border-b ${
-          isHourMark ? 'border-gray-800 h-7' : 'border-gray-900/50 h-[22px]'
-        }`}
+        className="flex items-stretch border-b border-gray-800 h-10"
       >
         <div className="w-14 flex-shrink-0 flex items-center justify-end pr-2">
-          {isHourMark && (
-            <span className="text-[11px] text-gray-500 tabular-nums">
-              {formatTime(date, displayTZ)}
-            </span>
-          )}
+          <span className="text-[11px] text-gray-500 tabular-nums">
+            {formatTime(date, displayTZ)}
+          </span>
         </div>
 
         <div

@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import type { TimeRange } from '@/lib/types';
 import { formatTime, getLocalDateString, formatLocalDayLabel } from '@/lib/timezones';
 
-const STEP_MS = 30 * 60 * 1000;
+const STEP_MS = 60 * 60 * 1000;
 
 interface Props {
   weekendStart: Date;
@@ -187,7 +187,6 @@ export default function PersonalPicker({
   for (let i = 0; i < steps.length; i++) {
     const ts = steps[i];
     const date = new Date(ts);
-    const isHourMark = i % 2 === 0;
     const dayLabel = dayBoundaries.get(i);
 
     if (dayLabel) {
@@ -222,17 +221,13 @@ export default function PersonalPicker({
     rows.push(
       <div
         key={`step-${ts}`}
-        className={`flex items-stretch border-b ${
-          isHourMark ? 'border-gray-800 h-8' : 'border-gray-900/50 h-6'
-        }`}
+        className="flex items-stretch border-b border-gray-800 h-12"
       >
         {/* Time label */}
         <div className="w-16 flex-shrink-0 flex items-center justify-end pr-3">
-          {isHourMark && (
-            <span className="text-xs text-gray-500 tabular-nums">
-              {formatTime(date, timezone)}
-            </span>
-          )}
+          <span className="text-xs text-gray-500 tabular-nums">
+            {formatTime(date, timezone)}
+          </span>
         </div>
 
         {/* Availability cell */}
@@ -256,15 +251,13 @@ export default function PersonalPicker({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-gray-400">
-            Click and drag to mark when you&apos;re free. Drag over a block to remove it.
-          </p>
-        </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm text-gray-400">
+          Tap or drag to mark free hours. Tap a selected block to remove it.
+        </p>
         <button
           onClick={onDone}
-          className="bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg px-5 py-2 text-sm transition-colors flex items-center gap-2"
+          className="bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg px-5 py-2.5 text-sm transition-colors flex items-center justify-center gap-2 w-full sm:w-auto shrink-0"
         >
           See group availability →
         </button>

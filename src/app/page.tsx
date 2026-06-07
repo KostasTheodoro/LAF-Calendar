@@ -217,12 +217,12 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-950 text-white">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 py-5 sm:py-8">
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold tracking-tight mb-1">LAF Calendar</h1>
-          <p className="text-sm text-gray-500">{windowLabel}</p>
+        <div className="mb-5 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight mb-1">LAF Calendar</h1>
+          <p className="text-xs sm:text-sm text-gray-500">{windowLabel}</p>
         </div>
 
         {/* Loading state */}
@@ -237,7 +237,7 @@ export default function Home() {
         {!loading && phase === 'name' && (
           <form
             onSubmit={(e) => { e.preventDefault(); handleJoin(); }}
-            className="flex flex-wrap gap-3 items-end"
+            className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:gap-3 sm:items-end"
           >
             <div>
               <label className="block text-xs text-gray-400 mb-1">Your name</label>
@@ -248,20 +248,20 @@ export default function Home() {
                 placeholder="Enter your name"
                 maxLength={30}
                 autoFocus
-                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 w-48"
+                className="bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-green-500 w-full sm:w-48"
               />
             </div>
 
             <div className="relative">
               <label className="block text-xs text-gray-400 mb-1">Timezone (auto-detected)</label>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-300 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 max-w-[220px] truncate">
+                <span className="text-sm text-gray-300 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 flex-1 sm:flex-none sm:max-w-[220px] truncate">
                   {getTimezoneLabel(timezone)}
                 </span>
                 <button
                   type="button"
                   onClick={() => setShowTZPicker((v) => !v)}
-                  className="text-xs text-gray-500 hover:text-gray-300 underline"
+                  className="text-xs text-gray-500 hover:text-gray-300 underline shrink-0"
                 >
                   change
                 </button>
@@ -271,7 +271,7 @@ export default function Home() {
                   value={timezone}
                   onChange={(e) => { setTimezone(e.target.value); setShowTZPicker(false); }}
                   size={7}
-                  className="absolute top-full mt-1 left-0 bg-gray-800 border border-gray-600 rounded-lg text-sm text-white focus:outline-none w-72 z-20 shadow-xl"
+                  className="absolute top-full mt-1 left-0 bg-gray-800 border border-gray-600 rounded-lg text-sm text-white focus:outline-none w-full sm:w-72 z-20 shadow-xl"
                 >
                   {TIMEZONE_OPTIONS.map((tz) => (
                     <option key={tz.value} value={tz.value}>{tz.label}</option>
@@ -282,7 +282,7 @@ export default function Home() {
 
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg px-5 py-2 text-sm transition-colors"
+              className="bg-green-600 hover:bg-green-500 text-white font-semibold rounded-lg px-5 py-2.5 text-sm transition-colors w-full sm:w-auto"
             >
               Continue →
             </button>
@@ -315,9 +315,9 @@ export default function Home() {
         {/* ── Phase: comparison grid ── */}
         {phase === 'compare' && currentUser && (
           <>
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: currentUser.color }} />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-5">
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: currentUser.color }} />
                 <span className="text-sm text-white font-semibold">{currentUser.name}</span>
                 <span className="text-xs text-gray-500">{getTimezoneLabel(currentUser.timezone)}</span>
                 <button onClick={handleReset} className="text-xs text-gray-600 hover:text-gray-400 underline ml-1">
@@ -326,7 +326,7 @@ export default function Home() {
               </div>
               <button
                 onClick={() => setPhase('pick')}
-                className="text-xs text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded-lg px-3 py-1.5 transition-colors"
+                className="text-xs text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded-lg px-3 py-2 sm:py-1.5 transition-colors self-start sm:self-auto"
               >
                 ← Edit my times
               </button>
